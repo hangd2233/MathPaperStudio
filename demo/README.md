@@ -14,4 +14,4 @@ latexmk -pdf -no-shell-escape -interaction=nonstopmode -halt-on-error -outdir=/t
 ```
 
 No `.mps` review state is shipped; reviewers must not interpret this demo as a
-record of an actual proof audit. License selection is pending in LICENSE-PLAN.md.
+record of an actual proof audit. This synthetic demo is MIT-licensed; see LICENSE.

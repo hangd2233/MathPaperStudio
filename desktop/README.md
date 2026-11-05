@@ -1,3 +1,9 @@
+> **MPS source checkout:** this directory contains a customized codex-prism.
+> Start with [the repository README](../README.md) and [MPS build instructions](../DESKTOP.md).
+> This release provides source only; upstream installers do not include these
+> MPS additions. Historical upstream behavior below may differ from manual mode.
+> Upstream copyrights and licenses are retained in LICENSE.
+
 <p align="center">
   <img src="./apps/desktop/src-tauri/icons/icon.png" width="120" height="120" alt="codex-prism logo" />
 </p>
@@ -8,30 +14,16 @@
 
 codex-prism is a local, single-user desktop application powered by your installed Codex CLI. Write and revise papers with an AI assistant, edit LaTeX when you need to, and review the compiled document alongside your conversation.
 
-![codex-prism workspace with project files, LaTeX source, Codex chat, and a compiled PDF preview](docs/images/codex-prism-workspace.png)
-
 [Quickstart](#quickstart) · [Features](#features) · [Build from source](#build-from-source) · [Releases](https://git.jolibrain.com/beniz/codex-prism/releases)
 
 ## Quickstart
 
-Packaged releases currently target **Ubuntu 26.04 LTS, x86_64**.
+### 1. Build the MPS source
 
-### 1. Install the application
-
-Download the `.deb` or `.AppImage` from [the releases page](https://git.jolibrain.com/beniz/codex-prism/releases). For version 1.4.0, install the Debian package from your download directory:
-
-```sh
-sudo apt install ./codex-prism-1.4.0-linux-x86_64.deb
-```
-
-Or run the AppImage:
-
-```sh
-chmod +x codex-prism-1.4.0-linux-x86_64.AppImage
-./codex-prism-1.4.0-linux-x86_64.AppImage
-```
-
-Launch the installed Debian package from your applications menu. Packaged builds do not require the application's Node.js or Rust build toolchain. Updates are installed manually; download checksums are included in each release.
+Follow [DESKTOP.md](../DESKTOP.md) for this repository's source build. The
+[upstream releases page](https://git.jolibrain.com/beniz/codex-prism/releases)
+is a separate project distribution and does not provide this MPS source snapshot.
+No prebuilt MPS package is offered here.
 
 ### 2. Set up Codex and LaTeX
 
@@ -132,8 +124,8 @@ For development or running directly from a repository checkout on Ubuntu 26.04 L
 2. Install Rust with rustup. This checkout pins Rust 1.88.0.
 3. Clone the repository and start the app:
    ```sh
-   git clone https://git.jolibrain.com/beniz/codex-prism.git
-   cd codex-prism
+   git clone https://github.com/hangd2233/MathPaperStudio.git
+   cd MathPaperStudio/desktop
    corepack pnpm install --frozen-lockfile
    corepack pnpm dev:desktop
    ```

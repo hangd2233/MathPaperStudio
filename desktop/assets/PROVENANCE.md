@@ -11,8 +11,7 @@ SVG primitives. The generator writes image data and required container headers
 only: no C2PA, EXIF, author email, instance ID, source timestamps or machine path.
 
 The application retains its existing asset filenames to avoid unrelated runtime
-changes. The old artwork is absent from this candidate's active files, but it
-remains in the private historical commit until the separately approved history
-cleanup. Retain all unrelated upstream software copyright notices.
+changes. The old artwork is absent from this independently initialized source repository.
+No previous repository history is imported. Retain all unrelated upstream software copyright notices.
 
-Proposed license for this new artwork and generator: MIT, see `LICENSE` here.
+License for this new artwork and generator: MIT, see `LICENSE` here.

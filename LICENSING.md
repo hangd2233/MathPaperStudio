@@ -1,6 +1,6 @@
-# Proposed source-release licensing policy
+# Source-release licensing policy
 
-This is the source-release publication policy prepared for owner approval.
+This is the owner-approved source-release publication policy.
 Original upstream grants and notices are retained; no upstream grant is revoked.
 
 ## Combined application and new application contributions
@@ -19,22 +19,22 @@ No commercial MuPDF license is presumed or purchased.
 
 The full AGPL version 3 text is included in `licenses/AGPL-3.0.txt`, copied
 byte-for-byte from the locked MuPDF package. The "or later" option comes from
-that package's notice and the proposed MPS contribution policy.
+that package's notice and the MPS contribution policy.
 
 ## Independent materials
 
 - Existing writing-skill references retain their own MIT or Apache-2.0 notices
   and attribution in `third_party/` and the corresponding reference copies.
 - The newly created geometric SVG, generated icons and their generator are
-  proposed under the MIT license in `desktop/assets/LICENSE`.
-- The new synthetic demo is proposed under `demo/LICENSE` (MIT).
+  licensed under the MIT license in `desktop/assets/LICENSE`.
+- The new synthetic demo is licensed under `demo/LICENSE` (MIT).
 - No license grant is claimed for private user manuscripts or reports. None are
   part of this source release. A user's documents do not become program source
   merely because they are edited or compiled by MPS.
 
 ## Publication scope
 
-The proposed initial release is **source-only**: no DMG, installed bundle,
+The initial release is **source-only**: no DMG, installed bundle,
 node_modules, bundled WASM, font files or application build artifact is uploaded.
 Users obtain locked dependencies from their official package sources. Runtime
 dependencies remain subject to their licenses. Binary release distribution is a
@@ -43,7 +43,7 @@ review, including MuPDF's underlying components and supported platforms.
 
 An AGPL notice must not be presented as proof of privacy cleanup or of a legal
 review of every possible distribution. Do not mark the project MIT-only or strip
-upstream attribution. No license policy becomes public until owner confirmation.
+upstream attribution. The owner has approved this source-only publication scope.
 
 ## Sources checked
 

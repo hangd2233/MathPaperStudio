@@ -8,13 +8,24 @@ Use Node.js 22+, pnpm 10.28.2 and Rust 1.88.0. Runtime PDF compilation needs a
 separate TeX distribution. Codex authentication belongs to each developer.
 
 ```sh
-cd desktop
+git clone https://github.com/hangd2233/MathPaperStudio.git
+cd MathPaperStudio/desktop
 corepack pnpm install --frozen-lockfile
 corepack pnpm --filter @codex-prism/desktop test
 corepack pnpm --filter @codex-prism/desktop build
 cargo test --locked --manifest-path crates/prism-core/Cargo.toml --lib -- --test-threads=1
 corepack pnpm build:desktop
 ```
+
+For a development session, run `corepack pnpm dev:desktop` from `desktop/`.
+The build script produces a local development artifact; it does not install or
+replace an existing app. The application still uses the upstream bundle identity,
+so avoid replacing another installed codex-prism build accidentally.
+
+macOS development also requires Apple's Xcode command-line tools. Linux needs
+the platform Tauri/WebKit development libraries described in `desktop/README.md`;
+Windows needs the corresponding Rust/MSVC/WebView2 toolchain. Only the macOS
+source checks described in the root README were revalidated for this release.
 
 Generated template PDFs, bundles, caches and credentials are excluded. Recreate
 template previews with the existing `generate-previews` script if needed.
