@@ -1,0 +1,37 @@
+{
+  "files": [
+    {
+      "sha256": "006e61a1b8c97620d75ceacc283de7a363d78da7da9a5b92203324c40feb7232",
+      "path": "LICENSE",
+      "git_blob_sha1": "f44b900b6208bbff3463cea88049e47d4bdcfd7e"
+    },
+    {
+      "sha256": "400c20a90b049a78e44a88764a1d6f9bdf88e041b753c3ec32ba7ce84997a4ff",
+      "path": "plugins/codex/drawio/README.md",
+      "git_blob_sha1": "4cc268b43d2436dee4983650f3da8604e8c35920"
+    },
+    {
+      "sha256": "1b9bd2bd291aaec42b41d5e4680b94ba7a2b68d9b8b416690029cca2df0d2130",
+      "path": "plugins/codex/drawio/skills/drawio/SKILL.md",
+      "git_blob_sha1": "7cbb78fe421a05e2ad8ec42434923d384d8f02b3"
+    },
+    {
+      "sha256": "8570b2f2a914832a7a6240755e5ad4fa2e22e219ff7c91225cb545dc810460d8",
+      "path": "shared/xml-essentials.md",
+      "git_blob_sha1": "e43da345bbfb141a67a43d8763c0fd8f65f567df"
+    },
+    {
+      "sha256": "1168b3e26064cd5baa39521320c8e19722a24ee95b22a3a995f9339e1a537804",
+      "path": "shared/xml-reference.md",
+      "git_blob_sha1": "3d72e498854fa10eff48cafb16168d33755d7a94"
+    },
+    {
+      "sha256": "e847d84ad34d61831b4ac4e95358876d1c59a9b5d6f558f968c4cb34ba45be7d",
+      "path": "shared/style-reference.md",
+      "git_blob_sha1": "635af801e0a04efc3b62f193db931f1fa8900cf7"
+    }
+  ],
+  "commit": "5a3de74523358b433bd6334b2cd79318eba065c8",
+  "repository": "https://github.com/jgraph/drawio-mcp",
+  "notice_files_at_commit": []
+}

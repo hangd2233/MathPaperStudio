@@ -1,0 +1,25 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\proofgap}[1]{\par\noindent\textbf{Unresolved proof gap:} #1\par}
+\input{notation}
+\title{Working draft: scope to be selected}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+This template has no mathematical claims yet.
+\end{abstract}
+\input{sections/introduction}
+\input{sections/results}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

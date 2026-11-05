@@ -1,0 +1,30 @@
+{
+  "name": "anti-defensive-writing",
+  "repository": "https://github.com/Kiterlin/anti-defensive-writing",
+  "commit": "c7edf8fc91ae9c4f7e58345bd12934bb4cf41c46",
+  "license": "MIT",
+  "adoption": "Default reference in authorized compose; opt-out per task; mathematical adaptation takes priority; no discovery entry",
+  "files": [
+    {
+      "local_path": "anti-defensive-writing/LICENSE",
+      "upstream_path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/Kiterlin/anti-defensive-writing/c7edf8fc91ae9c4f7e58345bd12934bb4cf41c46/LICENSE",
+      "sha256": "cc3d842a912f0ed1fc80ae8d2ca7ab6cff37756422069424bf2edec554219fc9",
+      "git_blob_sha1": "50c4372f587d3bd31e635fe892d386091ad7f1f9",
+      "bytes": 1065
+    },
+    {
+      "local_path": "anti-defensive-writing/rules.md",
+      "upstream_path": "skill/anti-defensive-writing/SKILL.md",
+      "url": "https://raw.githubusercontent.com/Kiterlin/anti-defensive-writing/c7edf8fc91ae9c4f7e58345bd12934bb4cf41c46/skill/anti-defensive-writing/SKILL.md",
+      "sha256": "ef055917cc1407064cd0deaffd78264c251e8a27c30c112c54c64fb5ca46ef7a",
+      "git_blob_sha1": "a475269b1ac0c7654e727b70f39b840ed08a3153",
+      "bytes": 19793
+    }
+  ],
+  "duplicate_alias_not_saved": {
+    "upstream_path": "SKILL.md",
+    "sha256": "ef055917cc1407064cd0deaffd78264c251e8a27c30c112c54c64fb5ca46ef7a",
+    "identical_to": "skill/anti-defensive-writing/SKILL.md"
+  }
+}

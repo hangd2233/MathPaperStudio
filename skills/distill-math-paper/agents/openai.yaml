@@ -1,0 +1,6 @@
+interface:
+  display_name: "论文选材与定界"
+  short_description: "从分阶段数学研究报告中提炼一篇论文的主线、证明依赖与写作范围"
+  default_prompt: "Use $distill-math-paper to select one coherent paper from the designated staged research reports. Reconcile corrections and proof dependencies; proceed to a working draft only when requested."
+policy:
+  allow_implicit_invocation: false

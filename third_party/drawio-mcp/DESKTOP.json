@@ -1,0 +1,15 @@
+{
+  "repository": "https://github.com/jgraph/drawio-desktop",
+  "release": "v32.4.1",
+  "platform": "Windows x64",
+  "asset": "draw.io-32.4.1-windows.zip",
+  "url": "https://github.com/jgraph/drawio-desktop/releases/download/v32.4.1/draw.io-32.4.1-windows.zip",
+  "official_release_api": "https://api.github.com/repos/jgraph/drawio-desktop/releases/tags/v32.4.1",
+  "official_sha256": "b9ced12274d1f1e9a80280e2dc43d3b2dbe2ae30a1553f42dd46011a587ee19b",
+  "download_sha256_matched": true,
+  "executable_authenticode_status": "Valid",
+  "signer": "draw.io Ltd, Northampton, GB",
+  "application_location": "machine-local LocalAppData, excluded from workspace",
+  "installation_method": "Extract official portable archive; no installer or upstream script run",
+  "checked_date": "2026-10-15"
+}

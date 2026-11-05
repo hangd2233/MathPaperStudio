@@ -1,0 +1,47 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\NN}{\mathbb{N}}
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\title{A Synthetic Example: Sums of Consecutive Odd Integers}
+\author{Example Author}
+\date{}
+\hypersetup{pdfauthor={Example Author},pdftitle={Synthetic MPS Demo},pdfsubject={Fictional elementary writing example}}
+\begin{document}
+\maketitle
+\begin{abstract}
+This synthetic writing example proves the classical identity expressing a square
+as a sum of consecutive odd integers. It demonstrates a small LaTeX project and
+does not claim a new mathematical result.
+\end{abstract}
+\tableofcontents
+\section{Introduction}
+Our example is the identity in Theorem~\ref{thm:odd}. All names and project
+details are placeholders. No external research report is used.
+\section{Preliminaries}
+\begin{definition}
+For $n\in\NN=\{1,2,3,\ldots\}$, set $S_n=\sum_{k=1}^{n}(2k-1)$.
+\end{definition}
+\section{A Telescoping Calculation}
+The identity $k^2-(k-1)^2=2k-1$ expresses each odd integer as the difference
+between consecutive squares. Summing these differences cancels all interior
+terms.
+\section{Main Result}
+\begin{theorem}\label{thm:odd}
+For every $n\in\NN$, one has $S_n=n^2$.
+\end{theorem}
+\begin{proof}
+Using the preceding calculation gives
+\[
+ S_n=\sum_{k=1}^{n}\bigl(k^2-(k-1)^2\bigr)=n^2-0^2=n^2.
+\]
+This holds for every positive integer $n$.
+\end{proof}
+\section{An Application}
+For $n=4$, the formula gives $1+3+5+7=16$. More generally,
+$S_{n+1}-S_n=2n+1$ for $n\in\NN$. This application illustrates the statement;
+it is not an independent computational verification service.
+\end{document}

@@ -1,0 +1,117 @@
+//! Desktop IPC adapters. Backend implementation lives in prism-core.
+
+#[tauri::command]
+pub async fn codex_status(
+    backend: tauri::State<'_, prism_core::Backend>,
+) -> Result<serde_json::Value, String> {
+    backend.codex_status().await
+}
+
+#[tauri::command]
+pub async fn codex_set_path(
+    backend: tauri::State<'_, prism_core::Backend>,
+    path: String,
+) -> Result<(), String> {
+    backend.codex_set_path(path).await
+}
+
+#[tauri::command]
+pub async fn codex_account(
+    backend: tauri::State<'_, prism_core::Backend>,
+    action: String,
+) -> Result<serde_json::Value, String> {
+    backend.codex_account(action).await
+}
+
+#[tauri::command]
+pub async fn codex_sessions(
+    backend: tauri::State<'_, prism_core::Backend>,
+    project_id: String,
+) -> Result<serde_json::Value, String> {
+    backend.codex_sessions(project_id).await
+}
+
+#[tauri::command]
+pub async fn codex_thread(
+    backend: tauri::State<'_, prism_core::Backend>,
+    project_id: String,
+    thread_id: String,
+    action: String,
+    title: Option<String>,
+) -> Result<serde_json::Value, String> {
+    backend
+        .codex_thread(project_id, thread_id, action, title)
+        .await
+}
+
+#[tauri::command]
+pub async fn codex_send(
+    backend: tauri::State<'_, prism_core::Backend>,
+    project_id: String,
+    thread_id: Option<String>,
+    prompt: String,
+    model: Option<String>,
+    effort: Option<String>,
+    images: Option<Vec<String>>,
+    main_document: Option<String>,
+) -> Result<serde_json::Value, String> {
+    backend
+        .codex_send_with_document(project_id, thread_id, prompt, model, effort, images, main_document)
+        .await
+}
+
+#[tauri::command]
+pub async fn codex_control(
+    backend: tauri::State<'_, prism_core::Backend>,
+    project_id: String,
+    thread_id: String,
+    turn_id: String,
+    prompt: Option<String>,
+) -> Result<serde_json::Value, String> {
+    backend
+        .codex_control(project_id, thread_id, turn_id, prompt)
+        .await
+}
+
+#[tauri::command]
+pub async fn codex_respond(
+    backend: tauri::State<'_, prism_core::Backend>,
+    id: serde_json::Value,
+    result: serde_json::Value,
+) -> Result<(), String> {
+    backend.codex_respond(id, result).await
+}
+
+#[tauri::command]
+pub async fn project_review(
+    backend: tauri::State<'_, prism_core::Backend>,
+    project_id: String,
+) -> Result<serde_json::Value, String> {
+    let backend = backend.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || backend.project_review(project_id))
+        .await
+        .map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
+pub async fn project_resolve_review(
+    backend: tauri::State<'_, prism_core::Backend>,
+    project_id: String,
+    path: String,
+    undo: bool,
+) -> Result<(), String> {
+    let backend = backend.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        backend.project_resolve_review(project_id, path, undo)
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
+pub async fn manual_operation(backend: tauri::State<'_, prism_core::Backend>, project_id: String, action: String, args: serde_json::Value) -> Result<serde_json::Value,String> {
+    backend.manual_operation(project_id,action,args).await
+}
+
+#[tauri::command]
+pub async fn planning_operation(backend:tauri::State<'_,prism_core::Backend>,project_id:String,action:String,args:serde_json::Value)->Result<serde_json::Value,String>{backend.planning_operation(project_id,action,args).await}

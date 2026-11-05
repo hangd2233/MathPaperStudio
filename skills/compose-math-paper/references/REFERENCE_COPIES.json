@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "generated_copies": {
+    "AUTHOR_STYLE.md": {
+      "master": "standards/AUTHOR_STYLE.md",
+      "sha256": "45f5c35fd0cbe8f0c6129e5a3927a9a3980b31a46ae0db5c9c7ecaa643b9e8b3"
+    }
+  },
+  "anti_defensive": "upstream/anti-defensive-writing/SOURCES.json"
+}

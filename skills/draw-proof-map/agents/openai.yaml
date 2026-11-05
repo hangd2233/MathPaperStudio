@@ -1,0 +1,3 @@
+interface:
+  display_name: "Draw Proof Map"
+  short_description: "按指定正文使用 draw.io 绘制证明依赖概览或单定理路线，保留可编辑源图"

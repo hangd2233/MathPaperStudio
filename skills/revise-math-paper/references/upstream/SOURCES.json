@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "retrieved_date": "2026-10-14",
+  "reference_only": true,
+  "sources": [
+    {
+      "name": "write-math",
+      "repository": "https://github.com/cboone/agent-harness-plugins",
+      "commit": "388c681810e348d9adb542197e79d3a9a7fa97f8",
+      "license": "MIT",
+      "adoption": "Only explicitly authorized expression revision; project constraints override upstream instructions; no discovery entry",
+      "files": [
+        {
+          "local_path": "write-math/LICENSE",
+          "upstream_path": "LICENSE",
+          "url": "https://raw.githubusercontent.com/cboone/agent-harness-plugins/388c681810e348d9adb542197e79d3a9a7fa97f8/LICENSE",
+          "sha256": "a63730b8a10a7b84fd6f960fa71e4da9ac5b70894b92459038610d18a133a966",
+          "git_blob_sha1": "f862e5fabbf6fe694ef78055f11044a704e22461",
+          "bytes": 1074
+        },
+        {
+          "local_path": "write-math/upstream-skill.md",
+          "upstream_path": "plugins/write-math/skills/write-math/SKILL.md",
+          "url": "https://raw.githubusercontent.com/cboone/agent-harness-plugins/388c681810e348d9adb542197e79d3a9a7fa97f8/plugins/write-math/skills/write-math/SKILL.md",
+          "sha256": "97a82e00430beb87de08a8dd7dc42f33f3d89f077a4787e68dc4df3644c59803",
+          "git_blob_sha1": "5266a73fce8c8c8ba903945aea562f33b19291c5",
+          "bytes": 3205
+        },
+        {
+          "local_path": "write-math/references/comprehensive/citations-and-references.md",
+          "upstream_path": "plugins/write-math/skills/write-math/references/comprehensive/citations-and-references.md",
+          "url": "https://raw.githubusercontent.com/cboone/agent-harness-plugins/388c681810e348d9adb542197e79d3a9a7fa97f8/plugins/write-math/skills/write-math/references/comprehensive/citations-and-references.md",
+          "sha256": "f36fc3283af2cb523c2fefc175e7631618717bfaf77651c0be81eb938cc3b9cb",
+          "git_blob_sha1": "71b89f063ed7874890b362f59fa50466ee2fa597",
+          "bytes": 12089
+        },
+        {
+          "local_path": "write-math/references/comprehensive/english-usage.md",
+          "upstream_path": "plugins/write-math/skills/write-math/references/comprehensive/english-usage.md",
+          "url": "https://raw.githubusercontent.com/cboone/agent-harness-plugins/388c681810e348d9adb542197e79d3a9a7fa97f8/plugins/write-math/skills/write-math/references/comprehensive/english-usage.md",
+          "sha256": "5267541733345b320ce48706ee908d7b77eb43dac902ba1918cf5952e56ad484",
+          "git_blob_sha1": "99f29cd4d1b5c08fc0f8b695fcf61f9002490770",
+          "bytes": 20427
+        },
+        {
+          "local_path": "write-math/references/comprehensive/notation.md",
+          "upstream_path": "plugins/write-math/skills/write-math/references/comprehensive/notation.md",
+          "url": "https://raw.githubusercontent.com/cboone/agent-harness-plugins/388c681810e348d9adb542197e79d3a9a7fa97f8/plugins/write-math/skills/write-math/references/comprehensive/notation.md",
+          "sha256": "560c3c6bdcca93e01234af8d7d19de43218b35c9dbe317c36eeabfd8f758502e",
+          "git_blob_sha1": "ab140c4d9f407b904c07fc6951f18e26fb7082ec",
+          "bytes": 9428
+        },
+        {
+          "local_path": "write-math/references/comprehensive/paper-structure.md",
+          "upstream_path": "plugins/write-math/skills/write-math/references/comprehensive/paper-structure.md",
+          "url": "https://raw.githubusercontent.com/cboone/agent-harness-plugins/388c681810e348d9adb542197e79d3a9a7fa97f8/plugins/write-math/skills/write-math/references/comprehensive/paper-structure.md",
+          "sha256": "4cbaa6dcd8c90ea6ac61880e6dd42a82b9d7c54a7433f2a069b2876052651462",
+          "git_blob_sha1": "6e3e5e9726cf6cd33d98428d91984bb7c8baef69",
+          "bytes": 13964
+        },
+        {
+          "local_path": "write-math/references/comprehensive/reader-centered-writing.md",
+          "upstream_path": "plugins/write-math/skills/write-math/references/comprehensive/reader-centered-writing.md",
+          "url": "https://raw.githubusercontent.com/cboone/agent-harness-plugins/388c681810e348d9adb542197e79d3a9a7fa97f8/plugins/write-math/skills/write-math/references/comprehensive/reader-centered-writing.md",
+          "sha256": "34c7411cd6fc09de834708f25442a82c575ae81a967117f3ea5caef206715da0",
+          "git_blob_sha1": "e90230e2410375646c0ef9aa1a78e11231f11a8b",
+          "bytes": 19084
+        },
+        {
+          "local_path": "write-math/references/comprehensive/revision-and-process.md",
+          "upstream_path": "plugins/write-math/skills/write-math/references/comprehensive/revision-and-process.md",
+          "url": "https://raw.githubusercontent.com/cboone/agent-harness-plugins/388c681810e348d9adb542197e79d3a9a7fa97f8/plugins/write-math/skills/write-math/references/comprehensive/revision-and-process.md",
+          "sha256": "194bede3a359bdeeaa423334c7901cd6c3c04f675bad62581510a93f449dbe1c",
+          "git_blob_sha1": "68b04f6122557e89706778e34c9f0cc00d308599",
+          "bytes": 23179
+        },
+        {
+          "local_path": "write-math/references/comprehensive/theorems-and-proofs.md",
+          "upstream_path": "plugins/write-math/skills/write-math/references/comprehensive/theorems-and-proofs.md",
+          "url": "https://raw.githubusercontent.com/cboone/agent-harness-plugins/388c681810e348d9adb542197e79d3a9a7fa97f8/plugins/write-math/skills/write-math/references/comprehensive/theorems-and-proofs.md",
+          "sha256": "70af8f852ee19aaa3dd772ed0335aa458c2717907a8ba8a7f90001344efe1f73",
+          "git_blob_sha1": "57349fc98dc5e07984028d3e64ad9e265e2ca389",
+          "bytes": 14485
+        },
+        {
+          "local_path": "write-math/references/essential/checklist.md",
+          "upstream_path": "plugins/write-math/skills/write-math/references/essential/checklist.md",
+          "url": "https://raw.githubusercontent.com/cboone/agent-harness-plugins/388c681810e348d9adb542197e79d3a9a7fa97f8/plugins/write-math/skills/write-math/references/essential/checklist.md",
+          "sha256": "8c33460bec81a5413b234759a4fc087d1b0fba008edc3993c7c225305f5deab0",
+          "git_blob_sha1": "cd28b154d6c36e2dad97b9fe6d7040149e551c90",
+          "bytes": 5260
+        }
+      ]
+    },
+    {
+      "name": "anti-defensive-writing",
+      "repository": "https://github.com/Kiterlin/anti-defensive-writing",
+      "commit": "c7edf8fc91ae9c4f7e58345bd12934bb4cf41c46",
+      "license": "MIT",
+      "adoption": "Default reference in explicitly authorized compose tasks, opt-out per task; authorized expression revision unchanged; mathematical adaptation overrides general suggestions; no discovery entry",
+      "files": [
+        {
+          "local_path": "anti-defensive-writing/LICENSE",
+          "upstream_path": "LICENSE",
+          "url": "https://raw.githubusercontent.com/Kiterlin/anti-defensive-writing/c7edf8fc91ae9c4f7e58345bd12934bb4cf41c46/LICENSE",
+          "sha256": "cc3d842a912f0ed1fc80ae8d2ca7ab6cff37756422069424bf2edec554219fc9",
+          "git_blob_sha1": "50c4372f587d3bd31e635fe892d386091ad7f1f9",
+          "bytes": 1065
+        },
+        {
+          "local_path": "anti-defensive-writing/rules.md",
+          "upstream_path": "skill/anti-defensive-writing/SKILL.md",
+          "url": "https://raw.githubusercontent.com/Kiterlin/anti-defensive-writing/c7edf8fc91ae9c4f7e58345bd12934bb4cf41c46/skill/anti-defensive-writing/SKILL.md",
+          "sha256": "ef055917cc1407064cd0deaffd78264c251e8a27c30c112c54c64fb5ca46ef7a",
+          "git_blob_sha1": "a475269b1ac0c7654e727b70f39b840ed08a3153",
+          "bytes": 19793
+        }
+      ],
+      "duplicate_alias_not_saved": {
+        "upstream_path": "SKILL.md",
+        "sha256": "ef055917cc1407064cd0deaffd78264c251e8a27c30c112c54c64fb5ca46ef7a",
+        "identical_to": "skill/anti-defensive-writing/SKILL.md"
+      }
+    }
+  ]
+}
