@@ -141,7 +141,7 @@ pub(crate) async fn operation(app: Backend, id: String, action: String, args: Va
     }
     app.inner.manual.jobs.lock().map_err(|e|e.to_string())?.insert(thread.clone(),Job{project:id.clone(),run,turn:String::new(),text:String::new(),active:true});
     let prompt=format!("{task}\nSources follow as a JSON map of relative path to source. Report exact source lines.\n{}",serde_json::to_string(&src).map_err(|e|e.to_string())?);
-    let params=json!({"threadId":thread,"input":[{"type":"text","text":prompt}],"approvalPolicy":"never","sandboxPolicy":{"type":"readOnly","networkAccess":false}});
+    let params=json!({"threadId":thread,"input":[{"type":"text","text":prompt}],"approvalPolicy":"never","effort":args["effort"].as_str().unwrap_or("medium"),"sandboxPolicy":{"type":"readOnly","networkAccess":false}});
     match crate::codex::manual_rpc(&app,"turn/start",params).await {
         Ok(v)=>{ if let Some(j)=app.inner.manual.jobs.lock().map_err(|e|e.to_string())?.get_mut(&thread) { j.turn=v["turn"]["id"].as_str().unwrap_or("").into(); } }
         Err(e)=>{

@@ -13,8 +13,8 @@ import { resolve } from "node:path";
  * The fix: `dangerousDisableAssetCspModification` prevents Tauri from adding nonces,
  * so 'unsafe-inline' remains effective for runtime style injection.
  */
-describe("tauri.conf.json CSP configuration", () => {
-  const confPath = resolve(__dirname, "../../src-tauri/tauri.conf.json");
+describe.each(["../../src-tauri/tauri.conf.json", "../../../ipad/src-tauri/tauri.conf.json"])("CSP configuration: %s", (config) => {
+  const confPath = resolve(__dirname, config);
   const conf = JSON.parse(readFileSync(confPath, "utf-8"));
   const security = conf.app?.security;
   const csp = security?.csp ?? "";

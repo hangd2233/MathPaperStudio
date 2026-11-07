@@ -592,6 +592,20 @@ describe("useDocumentStore", () => {
       expect(useDocumentStore.getState().files[0].isDirty).toBe(false);
     });
 
+    it("keeps text typed while an older save is waiting dirty", async () => {
+      let acknowledge!:()=>void;
+      vi.mocked(writeTextFile).mockImplementationOnce(()=>new Promise<void>(resolve=>{acknowledge=resolve;}));
+      useDocumentStore.setState({files:[makeFile({isDirty:true,content:"sent"})]});
+      const saving=useDocumentStore.getState().saveFile("main.tex");
+      useDocumentStore.getState().updateFileContent("main.tex","typed during network save");
+      acknowledge();await saving;
+      expect(useDocumentStore.getState().files[0].content).toBe("typed during network save");
+      expect(useDocumentStore.getState().files[0].isDirty).toBe(true);
+      await useDocumentStore.getState().saveFile("main.tex");
+      expect(writeTextFile).toHaveBeenLastCalledWith("/project/main.tex","typed during network save");
+      expect(useDocumentStore.getState().files[0].isDirty).toBe(false);
+    });
+
     it("saves a dirty file with empty string content (regression: empty content is not falsy-skipped)", async () => {
       useDocumentStore.setState({
         files: [makeFile({ isDirty: true, content: "" })],

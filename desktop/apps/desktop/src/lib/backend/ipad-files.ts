@@ -1,0 +1,8 @@
+import {backend} from './index';import {remoteFileReference,remoteProjectReference} from './runtime-transport';
+export async function readFile(path:any,..._options:any[]){const f=await backend.files.read(remoteFileReference(String(path)));return new Uint8Array(f.bytes);}
+export async function readTextFile(path:any,...options:any[]){return new TextDecoder('utf-8',{fatal:true}).decode(await readFile(path,...options));}
+export async function exists(path:any,..._options:any[]){const value=String(path);try{remoteProjectReference(value.replace(/\/$/,''));return true;}catch{}const ref=remoteFileReference(value),listing=await backend.files.list(ref.projectId);return listing.files.some(f=>f.path===ref.path)||listing.folders.includes(ref.path);}
+export async function stat(path:any,..._options:any[]){const value=String(path);try{remoteProjectReference(value.replace(/\/$/,''));return {isDirectory:true,isFile:false,size:0,mtime:null,birthtime:null};}catch{}const ref=remoteFileReference(value),list=await backend.files.list(ref.projectId),file=list.files.find(f=>f.path===ref.path);if(!file&&!list.folders.includes(ref.path))throw Error('Project file no longer exists');return {isDirectory:!file,isFile:!!file,size:file?.size??0,mtime:null,birthtime:null};}
+export async function writeFile(path:any,bytes:Uint8Array,..._options:any[]){const ref=remoteFileReference(String(path));const old=await backend.files.read(ref);return backend.files.write(ref,[...bytes],old.revision);}
+export async function writeTextFile(path:any,text:string,...options:any[]){return writeFile(path,new TextEncoder().encode(text),...options);}
+export async function mkdir(path:any,..._options:any[]){const ref=remoteFileReference(String(path));return backend.files.mutate(ref,'mkdir');}

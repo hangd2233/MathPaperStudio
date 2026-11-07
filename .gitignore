@@ -48,3 +48,14 @@ node_modules/
 **/.codexprism/
 *.tsbuildinfo
 *.icns.bak
+
+# iPad/remote source publication: never include generated or owner-private state.
+**/.build/
+**/evidence/
+**/*.mobileprovision
+**/*.provisionprofile
+**/*.entitlements
+/desktop/apps/ipad/src-tauri/gen/
+/desktop/apps/ipad/src-tauri/icons/
+/desktop/apps/remote/config.local.json
+/desktop/apps/remote/runtime/

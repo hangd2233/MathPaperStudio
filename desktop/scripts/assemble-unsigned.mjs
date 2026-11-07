@@ -1,0 +1,14 @@
+// Assemble only a freshly compiled, unsigned device app. Does not access signing material.
+import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {spawnSync} from 'node:child_process';import {createHash} from 'node:crypto';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');const lib=path.join(root,'.build/ios-target/aarch64-apple-ios/debug/libmps_ipad_lib.a');
+if(!fs.existsSync(lib))throw Error('First build the iOS library with custom-protocol; see README.');
+const assets=path.join(root,'apps/desktop/dist/assets');const scripts=fs.readdirSync(assets).filter(n=>n.endsWith('.js'));if(!scripts.some(n=>fs.readFileSync(path.join(assets,n),'utf8').includes('mps_vault_load')))throw Error('The built frontend lacks the Prism iPad connection entry');if(scripts.some(n=>fs.statSync(path.join(assets,n)).mtimeMs>fs.statSync(lib).mtimeMs))throw Error('Rebuild the iOS library after the latest frontend build');
+const apple=path.join(root,'apps/ipad/src-tauri/gen/apple');const external=path.join(apple,'Externals/arm64/debug');fs.mkdirSync(external,{recursive:true});fs.copyFileSync(lib,path.join(external,'libapp.a'));
+const project=path.join(apple,'mps-ipad.xcodeproj/project.pbxproj');let text=fs.readFileSync(project,'utf8');
+// The generated project assembles the already-built library; normal CLI builds regenerate this file.
+text=text.replace(/shellScript = "[^\n]*";/,'shellScript = '+JSON.stringify('test -f "${SRCROOT}/Externals/arm64/debug/libapp.a"')+';');fs.writeFileSync(project,text);
+const env={...process.env};for(const key of Object.keys(env))if(key.startsWith('APPLE_')||key.startsWith('TAURI_SIGNING_')||key.startsWith('IOS_CERTIFICATE')||key==='IOS_MOBILE_PROVISION')delete env[key];
+const result=spawnSync('xcodebuild',['-project',path.join(apple,'mps-ipad.xcodeproj'),'-scheme','mps-ipad_iOS','-configuration','debug','-sdk','iphoneos','-destination','generic/platform=iOS','-derivedDataPath',path.join(root,'.build/xcode-derived'),'CODE_SIGNING_ALLOWED=NO','CODE_SIGNING_REQUIRED=NO','CODE_SIGN_IDENTITY=','DEVELOPMENT_TEAM=','OTHER_LDFLAGS=$(inherited) -lc++ -lswiftCore','build'],{env,stdio:'inherit'});
+if(result.status!==0)process.exit(result.status??1);
+const products=path.join(root,'.build/xcode-derived/Build/Products/debug-iphoneos');const name=fs.readdirSync(products).find(n=>n.endsWith('.app'));if(!name)throw Error('Xcode returned without an app bundle');const app=path.join(products,name);
+const receipt={kind:'unsigned-device-build',librarySha256:createHash('sha256').update(fs.readFileSync(lib)).digest('hex'),codeSigningAllowed:false,app,deviceInstalled:false};fs.mkdirSync(path.join(root,'evidence'),{recursive:true});fs.writeFileSync(path.join(root,'evidence/unsigned-build.json'),JSON.stringify(receipt,null,2));

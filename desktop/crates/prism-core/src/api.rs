@@ -67,6 +67,9 @@ impl Backend {
         let _operation = self.enter()?;
         projects::project_write(self.clone(), project_id, path, bytes, expected_revision)
     }
+    pub fn project_remove_checked(&self,project_id:String,path:String,expected_revision:String)->Result<(),String>{
+        let _operation=self.enter()?;projects::project_remove_checked(self.clone(),project_id,path,expected_revision)
+    }
     pub fn project_mutate(
         &self,
         project_id: String,
@@ -152,6 +155,21 @@ impl Backend {
             main_document,
         )
         .await
+    }
+    pub async fn manual_restore_snapshot(&self,project_id:String,args:Value)->Result<Value,String>{
+        let _operation=self.enter()?;let _services=self.inner.codex.service_lock.lock().await;
+        crate::codex::assert_unlocked(self,&project_id)?;
+        if crate::manual::active(self,&project_id)||crate::planning::active(self,&project_id){return Err("Wait for current Prism review/planning work".into())}
+        let _io=self.inner.manual.io.lock().map_err(|e|e.to_string())?;
+        crate::manual_storage::restore_snapshot(self,&project_id,&args)
+    }
+    pub async fn codex_send_project_scoped(
+        &self,project_id:String,thread_id:Option<String>,prompt:String,
+        model:Option<String>,effort:Option<String>,images:Option<Vec<String>>,
+        main_document:Option<String>,
+    )->Result<serde_json::Value,String>{
+        let _operation=self.enter()?;
+        codex::codex_send_with_scope(self.clone(),project_id,thread_id,prompt,model,effort,images,main_document,true).await
     }
     pub async fn codex_control(
         &self,

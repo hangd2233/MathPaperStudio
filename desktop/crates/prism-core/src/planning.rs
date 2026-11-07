@@ -91,8 +91,10 @@ fn preview(p:&Value,run:&str)->Result<Value,String>{
 // Complete generated documents get baseline mathematics support. Headings-only
 // fragments and user-authored/private template preambles are left untouched.
 fn standalone_scaffold(dependencies:&Value,macro_path:&str,headings:&str)->(String,Vec<String>,usize){
- let mut packages=BTreeSet::from(["amsmath".to_string()]);
+ let mut packages=BTreeSet::from(["amsmath".to_string(),"enumerate".to_string()]);
  if let Some(deps)=dependencies.as_array(){packages.extend(deps.iter().filter_map(Value::as_str).map(str::to_string));}
+ // enumitem owns enumerate syntax when explicitly selected; do not load both.
+ if packages.contains("enumitem"){packages.remove("enumerate");}
  let packages=packages.into_iter().collect::<Vec<_>>();
  let mut latex=String::from("% NEW author-confirmed scaffold; existing manuscript is unchanged.\n\\documentclass{article}\n");
  for pkg in &packages{latex.push_str(&format!("\\usepackage{{{pkg}}}\n"));}
@@ -203,5 +205,29 @@ pub(crate) fn disconnect(app:&Backend){let ts=app.inner.planning.jobs.lock().map
   fs::write(dir.path().join("main.tex"),tex).unwrap();fs::write(dir.path().join("macros.tex"),"% no macro package dependencies\n").unwrap();
   let output=std::process::Command::new("pdflatex").args(["-no-shell-escape","-interaction=nonstopmode","-halt-on-error","main.tex"]).current_dir(dir.path()).output().unwrap();
   assert!(output.status.success(),"{}",String::from_utf8_lossy(&output.stdout));assert!(dir.path().join("main.pdf").metadata().unwrap().len()>0);
+ }
+}
+
+#[cfg(test)] mod enumerate_scaffold_tests {
+ use super::*;
+ #[test] fn list_packages_are_unique_and_enumitem_takes_precedence(){
+  for dependencies in [json!([]),json!(["enumerate","enumerate"]),json!(["enumitem"]),json!(["enumitem","enumerate"])] {
+   let (tex,packages,offset)=standalone_scaffold(&dependencies,"macros.tex","\\section{Lists}\n");
+   let enumitem=packages.iter().any(|p|p=="enumitem");
+   assert_eq!(tex.matches("\\usepackage{enumerate}").count(),if enumitem {0} else {1});
+   assert_eq!(tex.lines().nth(offset),Some("\\section{Lists}"));
+  }
+ }
+ #[test] #[ignore="requires TeX Live; run explicitly for acceptance"]
+ fn real_numbered_lists_compile(){
+  for deps in [json!([]),json!(["enumitem"])] {
+   let d=tempfile::tempdir().unwrap();
+   let labels=if deps.as_array().unwrap().is_empty(){"(i)"}else{"label=(\\roman*)"};
+   let body=format!("\\section{{Lists}}\n\\begin{{enumerate}}[{labels}]\n\\item First\n\\begin{{enumerate}}\n\\item Nested\n\\end{{enumerate}}\n\\item Second\n\\end{{enumerate}}\n");
+   let (tex,_,_)=standalone_scaffold(&deps,"macros.tex",&body);
+   fs::write(d.path().join("main.tex"),tex).unwrap();fs::write(d.path().join("macros.tex"),"% empty\n").unwrap();
+   let out=std::process::Command::new("pdflatex").args(["-no-shell-escape","-interaction=nonstopmode","-halt-on-error","main.tex"]).current_dir(d.path()).output().unwrap();
+   assert!(out.status.success(),"{}",String::from_utf8_lossy(&out.stdout));
+  }
  }
 }

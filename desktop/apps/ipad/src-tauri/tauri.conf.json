@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "MPS iPad",
+  "version": "0.2.3",
+  "identifier": "org.math-paper-studio.ipad",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "MPS_PRISM_IPAD=1 npm --prefix ../desktop run build",
+    "devUrl": "http://localhost:1439",
+    "frontendDist": "../../desktop/dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "MPS iPad",
+        "width": 1180,
+        "height": 820
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' ipc: http://ipc.localhost https: http://127.0.0.1:* http://localhost:*; worker-src 'self' blob:; object-src 'none'; frame-src 'none'",
+      "dangerousDisableAssetCspModification": true
+    }
+  },
+  "bundle": {
+    "active": true,
+    "iOS": {
+      "minimumSystemVersion": "15.0",
+      "template": "src-tauri/ios-project.yml"
+    }
+  }
+}

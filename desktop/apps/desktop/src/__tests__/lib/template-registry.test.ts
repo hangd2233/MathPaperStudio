@@ -117,3 +117,12 @@ it("blank projects include amsmath once, while private preambles retain their ow
   expect(getTemplateSkeleton(custom)).not.toContain("amsmath");
   expect(getTemplateSkeleton(custom)).toContain("\\usepackage{amsthm}");
 });
+
+
+it("blank writing projects load enumerate exactly once without enumitem", () => {
+  const blank = getTemplateById("blank")!;
+  const skeleton = getTemplateSkeleton(blank);
+  expect(blank.packages.some((p) => p.name === "enumerate")).toBe(true);
+  expect(skeleton.split("\\usepackage{enumerate}")).toHaveLength(2);
+  expect(skeleton).not.toContain("\\usepackage{enumitem}");
+});

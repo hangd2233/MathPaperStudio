@@ -19,11 +19,17 @@ const mupdfWasmFile = path.resolve(
 );
 
 export default defineConfig({
-  plugins: [react(), ...(macBuild ? [] : [topLevelAwait()])],
+  plugins: [{name:"prism-ipad-entry",transformIndexHtml:{order:"pre",handler(html:string){return process.env.MPS_PRISM_IPAD==="1"?html.replace("/src/main.tsx","/src/main-ipad.tsx"):html;}}},react(), ...(macBuild ? [] : [topLevelAwait()])],
   resolve: {
     dedupe: ["react", "react-dom"],
     alias: {
       "@": path.resolve(__dirname, "src"),
+      ...(process.env.MPS_PRISM_IPAD==="1"?{
+        "@tauri-apps/plugin-fs":path.resolve(__dirname,"src/lib/backend/ipad-files.ts"),
+        "@tauri-apps/api/path":path.resolve(__dirname,"src/lib/backend/ipad-path.ts"),
+        "@tauri-apps/plugin-dialog":path.resolve(__dirname,"src/lib/backend/ipad-dialog.ts"),
+        "@tauri-apps/plugin-shell":path.resolve(__dirname,"src/lib/backend/ipad-shell.ts"),
+      }:{}),
     },
   },
   define: {

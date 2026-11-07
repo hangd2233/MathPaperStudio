@@ -3194,11 +3194,13 @@ Summarize the key findings and their significance. State the main contributions 
     aspectRatio: "3/4",
     packages: [
       { name: "amsmath", description: "AMS mathematical typesetting" },
+      { name: "enumerate", description: "Custom numbered list labels" },
     ],
     content: `\\documentclass[12pt]{article}
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
 \\usepackage{amsmath}
+\\usepackage{enumerate}
 
 \\begin{document}
 

@@ -872,8 +872,9 @@ export const useDocumentStore = create<DocumentState>()((set, get) => ({
 
     await writeTexFileContent(file.ref, file.content);
     set((s) => ({
-      files: s.files.map((f) => (f.id === id ? { ...f, isDirty: false } : f)),
+      files: s.files.map((f) => (f.id === id && f.content === file.content ? { ...f, isDirty: false } : f)),
     }));
+    if(get().files.some(f=>f.isDirty))scheduleAutoSave();
   },
 
   saveAllFiles: async () => {
@@ -893,10 +894,11 @@ export const useDocumentStore = create<DocumentState>()((set, get) => ({
     if (savedIds.size > 0) {
       set((s) => ({
         files: s.files.map((f) =>
-          savedIds.has(f.id) ? { ...f, isDirty: false } : f,
+          savedIds.has(f.id) && f.content===dirtyFiles.find(sent=>sent.id===f.id)?.content ? { ...f, isDirty: false } : f,
         ),
       }));
     }
+    if(savedIds.size&&get().files.some(f=>f.isDirty))scheduleAutoSave();
   },
 
   saveCurrentFile: async () => {

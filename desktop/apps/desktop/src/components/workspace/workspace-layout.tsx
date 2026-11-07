@@ -1,3 +1,4 @@
+import {PaperSync} from "./paper-sync";
 import { ManualWorkbench } from "./manual-workbench";
 import { useManualStore } from "@/stores/manual-store";
 import { ProofMapControls } from "./proof-map-controls";
@@ -237,6 +238,7 @@ export function WorkspaceLayout() {
         >
           {previewVisible ? "收起 PDF 阅读区" : "展开 PDF 阅读区"}
         </button>
+        <PaperSync />
         <label className="ml-auto flex items-center gap-1 text-xs">
           外观
           <select

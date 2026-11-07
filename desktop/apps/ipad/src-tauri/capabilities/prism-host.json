@@ -1,0 +1,10 @@
+{
+  "identifier": "prism-ipad-host",
+  "description": "Prism local host and connection commands; no MRC reader business plugin.",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default"
+  ]
+}

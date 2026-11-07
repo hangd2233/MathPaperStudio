@@ -66,6 +66,7 @@ export function AgentChatDrawer({
     createTab: useAgentChatStore((state) => state.createTab),
     effortLevel: useAgentChatStore((state) => state.effortLevel),
     error: useAgentChatStore((state) => state.error),
+    connectionWarning: useAgentChatStore((state) => state.connectionWarning),
     isStreaming: useAgentChatStore((state) => state.isStreaming),
     locked: useAgentChatStore((state) => state.locked),
     pendingAttachments: useAgentChatStore((state) => state.pendingAttachments),
@@ -424,6 +425,14 @@ export function AgentChatDrawer({
                 <Request key={String(r.id)} event={r} />
               ))}
           </div>
+          {s.connectionWarning && (
+            <output
+              aria-live="polite"
+              className="mx-3 mb-2 block max-h-20 overflow-auto rounded-lg bg-amber-500/10 px-3 py-2 text-xs text-amber-700 dark:text-amber-300"
+            >
+              {s.connectionWarning}
+            </output>
+          )}
           {(s.error || t.error) && (
             <p
               role="alert"

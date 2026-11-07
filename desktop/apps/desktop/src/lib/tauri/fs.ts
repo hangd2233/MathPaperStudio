@@ -164,6 +164,7 @@ export async function readProjectBytes(
   revisions.set(revisionKey(ref), file.revision);
   return new Uint8Array(file.bytes);
 }
+const writeQueues=new Map<string,Promise<void>>();
 export async function writeProjectBytes(
   path: string | FileRef,
   bytes: Uint8Array,
@@ -171,12 +172,13 @@ export async function writeProjectBytes(
   const ref = refFor(path),
     key = revisionKey(ref);
   if (!revisions.has(key)) throw new Error("Read the file before updating it");
-  const revision = await backend.files.write(
-    ref,
-    [...bytes],
-    revisions.get(key)!,
-  );
-  revisions.set(key, revision);
+  const previous=writeQueues.get(key)??Promise.resolve();
+  const write=previous.catch(()=>{}).then(async()=>{
+    const revision=await backend.files.write(ref,[...bytes],revisions.get(key)!);
+    revisions.set(key,revision);
+  });
+  writeQueues.set(key,write);
+  try{await write;}finally{if(writeQueues.get(key)===write)writeQueues.delete(key);}
 }
 export async function readTexFileContent(
   path: string | FileRef,

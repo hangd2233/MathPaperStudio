@@ -37,3 +37,7 @@ snapshot had no Git history of its own. Root skill notices record their separate
 upstream origins. The historical prism artwork has been replaced with the original geometric SVG
 and reproducible icons documented in desktop/assets/PROVENANCE.md. Complete
 binary notices still need separate review before shipping application bundles.
+
+The shared frontend also contains the iPad entry point. Normal desktop builds
+continue to use `src/main.tsx`; only `MPS_PRISM_IPAD=1` selects the iPad entry and
+transport adapters. See [IPAD.md](IPAD.md) for the separate source target.

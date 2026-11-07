@@ -194,3 +194,14 @@ pub(crate) fn load_for_planning(app:&Backend,id:&str,run:&str)->Result<Value,Str
   }
  }Err("Planning result needs recovery: no retained branch contains the run".into())
 }
+
+/// A sync rollback appends a new Prism revision; it never deletes newer records.
+/// The caller holds the manual I/O lock and has checked the author-owned scope.
+pub(crate) fn restore_snapshot(app:&Backend,id:&str,args:&Value)->Result<Value,String>{
+    let current=load(app,id)?;check_expected(&current,args)?;
+    if current["storageStatus"]=="conflict"{return Err("Resolve current portable heads before restoring a prior snapshot".into())}
+    let mut restored=body(&args["data"])?;
+    restored["mode"]=current["mode"].clone();
+    let parents=serde_json::from_value::<Vec<String>>(current["storageHeads"].clone()).unwrap_or_default();
+    append(app,id,&restored,parents)?;load(app,id)
+}

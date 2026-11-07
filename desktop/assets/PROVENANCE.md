@@ -15,3 +15,9 @@ changes. The old artwork is absent from this independently initialized source re
 No previous repository history is imported. Retain all unrelated upstream software copyright notices.
 
 License for this new artwork and generator: MIT, see `LICENSE` here.
+
+The iPad source target uses `../scripts/generate-ipad-icons.py` to rasterize the
+same owned geometry on an opaque background and produce the Xcode asset catalog.
+It imports the existing generator, uses only the Python standard library and
+adds no personal image or historical artwork. The generator is covered by the
+same MIT artwork license; generated device assets remain untracked.

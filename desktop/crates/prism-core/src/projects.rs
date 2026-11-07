@@ -180,7 +180,34 @@ fn write_checked(
     if let Some(parent) = target.parent() {
         fs::create_dir_all(parent).map_err(|e| e.to_string())?;
     }
-    fs::write(target, bytes).map_err(|e| e.to_string())?;
+    // A partial process write must not truncate a previously accepted document.
+    // The project mutex serializes this Backend. External writers must be paused
+    // during an approved cross-project sync transaction; the second revision
+    // check detects edits made while the replacement file was staged.
+    use std::io::Write;
+    if let Ok(meta)=fs::metadata(target) {
+        if meta.permissions().readonly(){return Err("File is read-only".into())}
+    }
+    let parent=target.parent().ok_or("Missing parent directory")?;
+    let temporary=parent.join(format!(".prism-write-{}.tmp",uuid::Uuid::new_v4()));
+    let mut options=fs::OpenOptions::new();options.write(true).create_new(true);
+    #[cfg(unix)] {use std::os::unix::fs::OpenOptionsExt;options.mode(0o600);}
+    let result=(||->Result<(),String>{
+        let mut file=options.open(&temporary).map_err(|e|e.to_string())?;
+        if let Ok(meta)=fs::metadata(target){file.set_permissions(meta.permissions()).map_err(|e|e.to_string())?;}
+        file.write_all(bytes).map_err(|e|e.to_string())?;file.sync_all().map_err(|e|e.to_string())?;
+        let latest=match fs::read(target){Ok(data)=>Some(revision(&data)),Err(e)if e.kind()==std::io::ErrorKind::NotFound=>None,Err(e)=>return Err(e.to_string())};
+        if latest.as_deref()!=expected_revision{return Err("File changed while save was staged. Reload before saving.".into())}
+        if expected_revision.is_none(){
+            // Create-only must remain create-only even if another process creates
+            // the target immediately after the final revision check.
+            fs::hard_link(&temporary,target).map_err(|e|e.to_string())?;
+            fs::remove_file(&temporary).map_err(|e|e.to_string())?;
+        }else{fs::rename(&temporary,target).map_err(|e|e.to_string())?;}
+        #[cfg(unix)] {fs::File::open(parent).and_then(|d|d.sync_all()).map_err(|e|e.to_string())?;}
+        Ok(())
+    })();
+    if result.is_err(){let _=fs::remove_file(&temporary);}result?;
     Ok(revision(bytes))
 }
 // Review captures source and assets, never build/environment/internal directories.
@@ -253,6 +280,20 @@ mod tests {
     }
     #[cfg(unix)]
     #[test]
+    fn replacement_preserves_permissions_and_respects_read_only_files() {
+        use std::os::unix::fs::PermissionsExt;
+        let d=tempfile::tempdir().unwrap();let file=d.path().join("paper.tex");
+        let rev=write_checked(&file,b"base",None).unwrap();
+        fs::set_permissions(&file,fs::Permissions::from_mode(0o600)).unwrap();
+        let next=write_checked(&file,b"replacement",Some(&rev)).unwrap();
+        assert_eq!(fs::metadata(&file).unwrap().permissions().mode()&0o777,0o600);
+        fs::set_permissions(&file,fs::Permissions::from_mode(0o400)).unwrap();
+        assert!(write_checked(&file,b"unapproved",Some(&next)).is_err());
+        assert_eq!(fs::read(&file).unwrap(),b"replacement");
+        assert_eq!(fs::read_dir(d.path()).unwrap().count(),1);
+    }
+    #[cfg(unix)]
+    #[test]
     fn dangling_parent_symlinks_are_rejected() {
         let d = tempfile::tempdir().unwrap();
         std::os::unix::fs::symlink(d.path().join("missing"), d.path().join("link")).unwrap();
@@ -301,6 +342,15 @@ mod tests {
     }
 }
 
+pub(crate) fn project_remove_checked(app:crate::Backend,project_id:String,path:String,expected:String)->Result<(),String>{
+    let _guard=app.inner.projects.0.lock().map_err(|e|e.to_string())?;
+    crate::codex::assert_unlocked(&app,&project_id)?;let project=get(&app,&project_id)?;let target=resolve(&project.root,&path)?;
+    if !target.is_file(){return Err("Checked sync deletion requires a regular file".into())}
+    if revision(&fs::read(&target).map_err(|e|e.to_string())?)!=expected{return Err("File changed before sync deletion".into())}
+    fs::remove_file(&target).map_err(|e|e.to_string())?;
+    #[cfg(unix)]{if let Some(parent)=target.parent(){fs::File::open(parent).and_then(|d|d.sync_all()).map_err(|e|e.to_string())?;}}
+    Ok(())
+}
 pub(crate) fn project_mutate(
     app: crate::Backend,
     project_id: String,

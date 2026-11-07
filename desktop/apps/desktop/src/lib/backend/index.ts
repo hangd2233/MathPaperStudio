@@ -1,4 +1,4 @@
-import { invoke as nativeInvoke } from "@tauri-apps/api/core";
+import { hostInvoke as nativeInvoke } from "./runtime-transport";
 const projectServices = new Set([
   "compile_latex",
   "load_existing_pdf",
@@ -38,7 +38,7 @@ export async function invoke<T>(
   }
   return nativeInvoke<T>(command, args);
 }
-import { listen } from "@tauri-apps/api/event";
+import { hostListen as listen } from "./runtime-transport";
 import type { TemplateCategory } from "@/lib/template-registry";
 export interface PrivateTemplateSummary {
   id: string;
@@ -230,5 +230,5 @@ export const backend: PrismBackend = {
 };
 // Compatibility transport for existing native services while their typed facades migrate.
 export { listen };
-export { convertFileSrc } from "@tauri-apps/api/core";
+export { hostFileURL as convertFileSrc } from "./runtime-transport";
 export type { UnlistenFn } from "@tauri-apps/api/event";

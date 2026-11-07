@@ -1,6 +1,7 @@
 # MathPaperStudio
 
-MPS is a desktop LaTeX writing workspace with an author-controlled manual mode.
+MPS is a LaTeX writing workspace with an author-controlled manual mode and an
+iPad client for a separately configured, project-scoped Mac host.
 It supports PDF report import, mainline selection, hierarchical English outlines,
 reviewed macro definitions, outline PDF export, and light/dark/system appearance.
 Language, proof/citation, and calculation reviews return findings and suggestions;
@@ -10,11 +11,13 @@ not independently execute calculations.
 ## Repository layout
 
 - `desktop/`: customized codex-prism desktop source and upstream notices.
+- `desktop/apps/ipad/`, `desktop/apps/remote/`: iPad client and scoped Mac-host source.
 - `skills/`, `standards/`, `templates/`, `tools/`: optional local writing workflow.
 - `demo/`: a fictional, elementary mathematical paper; no research report required.
 
 This is a **source-only release**; there are no MPS installers or hosted service.
-Build instructions are in [DESKTOP.md](DESKTOP.md). Install and authenticate your
+Desktop build instructions are in [DESKTOP.md](DESKTOP.md); iPad and remote-host
+source instructions are in [IPAD.md](IPAD.md). Install and authenticate your
 own Codex CLI, and install a TeX distribution separately. No model request is
 needed to edit or compile the demo; the current onboarding flow may still ask
 for a working Codex connection before entering the workspace.
@@ -37,7 +40,7 @@ examples, not research claims or endorsements; contact details are placeholders.
 
 ## Validation and limitations
 
-The source snapshot was tested on macOS Apple Silicon: 279 frontend tests,
+The initial desktop-only source snapshot was tested on macOS Apple Silicon: 279 frontend tests,
 141 backend unit tests and 9 synthetic planning-protocol tests passed; 7 backend
 tests were explicitly skipped. TypeScript and the frontend production build
 passed. The synthetic demo compiled to two pages. These are recorded local
@@ -52,3 +55,14 @@ or active inputs: use trusted projects. Manual-mode model reviews provide
 suggestions, not certified proofs. You control which material is sent to your
 configured Codex provider. Keep account configuration, project history and
 `.mps` records out of a public source checkout.
+
+## Source checkpoint: iPad 0.2.3
+
+This checkpoint publishes the already implemented iPad transport, retained local
+drafts, explicit source-sync review, durable task admission, keyboard viewport
+handling and connection-warning recovery. It does not enable a hosted service,
+ship a signed installer, or import another computer's unrelated Git history.
+The public tree retains its sanitized templates, topic-neutral writing guidance
+and original geometric artwork. Personal deployments and their acceptance logs
+are not part of this repository. See [IPAD.md](IPAD.md) for current checks and
+remaining device-validation limits.

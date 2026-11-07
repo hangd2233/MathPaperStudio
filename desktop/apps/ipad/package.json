@@ -1,0 +1,13 @@
+{
+  "name": "@codex-prism/ipad",
+  "version": "0.2.3",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "MPS_PRISM_IPAD=1 npm --prefix ../desktop run build",
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.5.0"
+  }
+}

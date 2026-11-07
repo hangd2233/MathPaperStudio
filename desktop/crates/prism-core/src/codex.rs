@@ -586,6 +586,13 @@ pub(crate) async fn codex_send(
     images: Option<Vec<String>>,
     main_document: Option<String>,
 ) -> Result<Value, String> {
+    codex_send_with_scope(app,project_id,thread_id,prompt,model,effort,images,main_document,false).await
+}
+pub(crate) async fn codex_send_with_scope(
+    app: crate::Backend,project_id:String,thread_id:Option<String>,prompt:String,
+    model:Option<String>,effort:Option<String>,images:Option<Vec<String>>,
+    main_document:Option<String>,paper_scope_only:bool,
+)->Result<Value,String>{
     crate::manual::assert_agent(&app, &project_id)?;
     let project = projects::get(&app, &project_id)?;
     let c = connection(&app).await?;
@@ -622,6 +629,15 @@ pub(crate) async fn codex_send(
     let _ = app.emit_review(json!({"projectId":project_id}));
     let result: Result<Value,String>=async{
  let mut config=json!({"cwd":project.root,"approvalPolicy":"on-request","approvalsReviewer":"user","sandbox":"workspace-write","config":{"sandbox_workspace_write.network_access":false},"developerInstructions":concat!("You are the scientific writing assistant in codex-prism, a LaTeX editor.\n\n", include_str!("writing-guidance.txt"))});
+ if paper_scope_only {
+  // Reuse Prism sessions/reviews while preventing inherited external connectors
+  // from expanding an iPad paper grant. Never change the user's global config.
+  let inherited=c.call("config/read",json!({"includeLayers":false})).await?;
+  for field in ["mcp_servers","plugins"]{if let Some(entries)=inherited["config"][field].as_object(){config["config"][field]=json!(entries.keys().map(|key|(key.clone(),json!({"enabled":false}))).collect::<serde_json::Map<String,Value>>());}}
+  config["config"]["web_search"]=json!("disabled");config["config"]["features.apps"]=json!(false);
+  let guidance=config["developerInstructions"].as_str().unwrap_or_default().to_owned();
+  config["developerInstructions"]=json!(format!("{}\nThis is a scoped remote paper session. Read and edit only files within the registered project working directory. Do not access other home files, credentials, external connectors or network services. Additional permissions are outside this paper grant.",guidance));
+ }
  if uses_managed_workspace_skills(std::path::Path::new(&project.root)) { config["config"]["project_root_markers"]=json!([".agents"]); }
  if let Some(m)=model.filter(|s|!s.is_empty()){config["model"]=json!(m)}
  let thread=if let Some(id)=thread_id {if !sessions(&app)?.iter().any(|s|s.id==id && s.project_id==project_id){return Err("Unknown project session".into())}config["threadId"]=json!(id);c.call("thread/resume",config).await?}else{c.call("thread/start",config).await?};

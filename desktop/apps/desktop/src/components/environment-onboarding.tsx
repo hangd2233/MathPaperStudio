@@ -1,3 +1,4 @@
+import {isRemotePrism} from "@/lib/backend/runtime-transport";
 import { useEffect, useState } from "react";
 import { AgentSetup } from "@/components/agent-setup";
 import {
@@ -25,6 +26,8 @@ export function EnvironmentOnboarding() {
       setDismissed(false);
     }
   }, [status]);
+  // Provider installation/login belongs to the Mac host, never to the iPad.
+  if(isRemotePrism())return null;
   return (
     <Dialog open={opened && !dismissed} onOpenChange={() => undefined}>
       <DialogContent

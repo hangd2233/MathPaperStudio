@@ -66,6 +66,7 @@ beforeEach(() => {
     review: { active: false, changes: [] },
     isStreaming: false,
     error: null,
+    connectionWarning: null,
     requests: [],
     pendingAttachments: [],
     selectedModel: useAgentChatStore.getInitialState().selectedModel,
@@ -466,4 +467,43 @@ it("blocks legacy direct prompts and steering while the project is in manual mod
  expect(backend.agent.control).not.toHaveBeenCalled();
  expect(save).not.toHaveBeenCalled();
  expect(useAgentChatStore.getState().error).toContain("只读审查");
+});
+
+
+describe("remote transport warnings", () => {
+  it("keeps the active turn, approvals and drafts intact across interruption and recovery", () => {
+    const store = useAgentChatStore.getState();
+    const approval = { id: 7, method: "item/tool/requestUserInput", params: { threadId: "thread1" } };
+    const active = { ...store.tabs[0], sessionId: "thread1", turnId: "turn1", isStreaming: true, draft: "unsent draft" };
+    useAgentChatStore.setState({ tabs: [active], isStreaming: true, requests: [approval] });
+    store.handleEvent({ method: "connection/interrupted", params: {} });
+    expect(useAgentChatStore.getState().connectionWarning).toContain("状态同步暂时中断");
+    expect(useAgentChatStore.getState().error).toBeNull();
+    expect(useAgentChatStore.getState().tabs[0]).toEqual(active);
+    expect(useAgentChatStore.getState().isStreaming).toBe(true);
+    expect(useAgentChatStore.getState().requests).toEqual([approval]);
+    store.handleEvent({ method: "connection/restored", params: {} });
+    expect(useAgentChatStore.getState().connectionWarning).toBeNull();
+    expect(useAgentChatStore.getState().tabs[0]).toEqual(active);
+    expect(backend.agent.send).not.toHaveBeenCalled();
+    expect(backend.agent.control).not.toHaveBeenCalled();
+  });
+
+  it("does not clear genuine task failures when HTTP polling recovers", () => {
+    useAgentChatStore.setState({ error: "Model rejected this task" });
+    const store = useAgentChatStore.getState();
+    store.handleEvent({ method: "connection/interrupted", params: {} });
+    store.handleEvent({ method: "connection/restored", params: {} });
+    expect(useAgentChatStore.getState().error).toBe("Model rejected this task");
+  });
+
+  it("does not clear an actual Codex disconnect when HTTP polling recovers", () => {
+    const store = useAgentChatStore.getState();
+    store.handleEvent({ method: "connection/closed", params: {} });
+    store.handleEvent({ method: "connection/interrupted", params: {} });
+    store.handleEvent({ method: "connection/restored", params: {} });
+    expect(useAgentChatStore.getState().error).toContain("Codex disconnected");
+    expect(useAgentChatStore.getState().isStreaming).toBe(false);
+    expect(backend.agent.send).not.toHaveBeenCalled();
+  });
 });

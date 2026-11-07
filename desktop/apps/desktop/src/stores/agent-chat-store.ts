@@ -37,6 +37,7 @@ export interface TabState {
 interface ChatState {
   tabs: TabState[];
   activeTabId: string;
+  connectionWarning: string | null;
   error: string | null;
   isStreaming: boolean;
   projectId: string | null;
@@ -128,6 +129,7 @@ function flushDeltas() {
 export const useAgentChatStore = create<ChatState>((set, get) => ({
   tabs: [first],
   activeTabId: first.id,
+  connectionWarning: null,
   error: null,
   isStreaming: false,
   projectId: null,
@@ -441,8 +443,20 @@ export const useAgentChatStore = create<ChatState>((set, get) => ({
     // Finish buffered text before lifecycle events replace items or end a turn.
     if (!e.method.endsWith("/delta")) flushDeltas();
     const p = e.params ?? {};
+    if (e.method === "connection/interrupted") {
+      // Event polling can fail while Codex continues normally on the Mac.
+      // Preserve turns, approvals and drafts; never infer a stopped model task.
+      set({ connectionWarning: "iPad 与 Mac 的状态同步暂时中断，正在自动重连；原任务不会重发。" });
+      return;
+    }
+    if (e.method === "connection/restored") {
+      // A healthy transport must not erase genuine Codex/turn errors.
+      set({ connectionWarning: null });
+      return;
+    }
     if (e.method === "connection/closed") {
       set((s) => ({
+        connectionWarning: null,
         isStreaming: false,
         error:
           "Codex disconnected. Reconnect and resume the session; the prompt was not retried.",
